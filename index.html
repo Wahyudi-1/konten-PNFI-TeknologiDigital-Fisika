@@ -17,7 +17,7 @@
     <div id="app-container">
         <!-- NAVIGATION BAR -->
         <nav class="top-nav">
-            <h2 class="nav-title">Studio  Digital</h2>
+            <h2 class="nav-title">Studio Digital</h2>
             <div class="nav-buttons">
                 <button class="nav-btn active" onclick="switchScreen('screen-home')" id="btn-nav-home">Beranda</button>
                 <button class="nav-btn" onclick="switchScreen('screen-lab')" id="btn-nav-lab">Lab Maya</button>
@@ -32,12 +32,12 @@
             
             <div class="card" style="border-left-color: var(--accent);">
                 <h3>Selamat Datang di Laboratorium Digital!</h3>
-                <p>Dalam modul ini, kamu tidak hanya melihat bagaimana sinyal diubah menjadi angka, tetapi kamu akan belajar "Bahasa Mesin" sesungguhnya.</p>
+                <p>Dalam modul ini, kamu akan belajar "Bahasa Mesin" sesungguhnya:</p>
                 <ul style="color: #cbd5e1; line-height: 1.6;">
-                    <li><strong>Konversi Analog ke Digital:</strong> Proses mengubah suara menjadi data.</li>
-                    <li><strong>Eksplorasi 8-Bit (Byte):</strong> Menghitung dan menerjemahkan Biner ke Desimal.</li>
-                    <li><strong>Aritmatika Biner:</strong> Menjumlah, mengurang, mengali, dan membagi angka 0 dan 1.</li>
-                    <li><strong>Gerbang Logika:</strong> Dasar sirkuit otak komputer (AND, OR, NOT, dll).</li>
+                    <li><strong>Konversi Sinyal:</strong> Proses mengubah suara menjadi data digital.</li>
+                    <li><strong>Eksplorasi Biner & Media Penyimpanan:</strong> Bagaimana angka biner disimpan ke dalam CD, Harddisk, dan SSD.</li>
+                    <li><strong>Aritmatika Biner:</strong> Operasi matematika menggunakan angka 0 dan 1.</li>
+                    <li><strong>Gerbang Logika:</strong> Dasar sirkuit otak komputer.</li>
                 </ul>
             </div>
             <div style="text-align: center; margin-top: 20px;">
@@ -75,34 +75,86 @@
                     <button style="background:var(--analog-color); border:none; padding:5px 15px; border-radius:4px; font-weight:bold; cursor:pointer;" onclick="performADC()">Sampling (ADC)</button>
                     <button style="background:var(--digital-color); border:none; padding:5px 15px; border-radius:4px; font-weight:bold; cursor:pointer;" onclick="performDAC()">Playback (DAC)</button>
                 </div>
-                <div class="card">
-                    <p><strong>Analog-to-Digital Converter (ADC)</strong> mengambil "sampel" gelombang suara pada interval tertentu. Semakin tinggi <em>Sampling Rate</em>, semakin rapat sampelnya, data digital semakin mirip dengan suara asli.</p>
+                
+                <div style="margin-bottom: 5px; font-size: 0.9rem; color: #94a3b8;">Data Biner Tersimpan (Hasil Sampling):</div>
+                <div class="data-stream" id="binaryStream">
+                    <span style="opacity:0.5;">Belum ada data... Klik 'Sampling'</span>
                 </div>
             </div>
 
-            <!-- TAB 2: Eksplorasi Biner (8-Bit) -->
+            <!-- TAB 2: Eksplorasi Biner & Storage (DARI KODE ANDA) -->
             <div id="tab-biner" class="tab-content">
-                <p class="screen-subtitle">Kenali 1 Byte (8-Bit). Klik kotak untuk menghidupkan (1) atau mematikan (0) bit.</p>
+                <p class="screen-subtitle">Bagaimana komputer memahami dan menyimpan data fisik.</p>
                 
-                <div class="card" style="text-align: center;">
-                    <h3>Saklar 8-Bit (Biner ke Desimal)</h3>
-                    <div class="bit-interactive">
-                        <div class="bit-toggle" onclick="toggle8Bit(7)"><div class="bit-val-label">128</div><div class="bit-box" id="b7">0</div></div>
-                        <div class="bit-toggle" onclick="toggle8Bit(6)"><div class="bit-val-label">64</div><div class="bit-box" id="b6">0</div></div>
-                        <div class="bit-toggle" onclick="toggle8Bit(5)"><div class="bit-val-label">32</div><div class="bit-box" id="b5">0</div></div>
-                        <div class="bit-toggle" onclick="toggle8Bit(4)"><div class="bit-val-label">16</div><div class="bit-box" id="b4">0</div></div>
-                        <div class="bit-toggle" onclick="toggle8Bit(3)"><div class="bit-val-label">8</div><div class="bit-box" id="b3">0</div></div>
-                        <div class="bit-toggle" onclick="toggle8Bit(2)"><div class="bit-val-label">4</div><div class="bit-box" id="b2">0</div></div>
-                        <div class="bit-toggle" onclick="toggle8Bit(1)"><div class="bit-val-label">2</div><div class="bit-box" id="b1">0</div></div>
-                        <div class="bit-toggle" onclick="toggle8Bit(0)"><div class="bit-val-label">1</div><div class="bit-box" id="b0">0</div></div>
-                    </div>
-                    
-                    <div style="background:#020617; padding:15px; border-radius:8px; margin-top:20px;">
-                        <div style="font-size:1.5rem; margin-bottom:10px;">Desimal: <span id="decResult8" class="highlight">0</span></div>
-                        <div style="font-size:1rem; color:#94a3b8;">Kalkulasi: <span id="calcEquation8">0</span></div>
-                        <div style="margin-top:10px; border-top:1px solid #334155; padding-top:10px;">
-                            Karakter ASCII: <strong id="asciiResult" style="color:var(--digital-color); font-size:1.2rem;">-</strong>
+                <div class="lab-grid">
+                    <!-- Biner ke Desimal -->
+                    <div class="card">
+                        <h3>Biner ke Desimal (4-Bit)</h3>
+                        <div class="bit-interactive">
+                            <div class="bit-toggle" onclick="toggleBit(3)"><div class="bit-val-label">8</div><div class="bit-box" id="bit3">0</div></div>
+                            <div class="bit-toggle" onclick="toggleBit(2)"><div class="bit-val-label">4</div><div class="bit-box" id="bit2">0</div></div>
+                            <div class="bit-toggle" onclick="toggleBit(1)"><div class="bit-val-label">2</div><div class="bit-box" id="bit1">0</div></div>
+                            <div class="bit-toggle" onclick="toggleBit(0)"><div class="bit-val-label">1</div><div class="bit-box" id="bit0">0</div></div>
                         </div>
+                        <div class="calc-result">
+                            <span id="calcEquation" style="color:#94a3b8; font-size:0.9rem;">0 = </span>
+                            <span id="decResult" class="highlight">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Desimal ke Biner -->
+                    <div class="card">
+                        <h3>Desimal ke Biner</h3>
+                        <p>Masukkan angka desimal (0-15) untuk melihat binernya.</p>
+                        <div style="text-align:center; margin: 20px 0;">
+                            <input type="number" id="decInput" class="calc-input" placeholder="0-15" min="0" max="15" oninput="convertDecToBin()">
+                        </div>
+                        <div class="calc-result">
+                            Kode Biner: <span id="binResult" class="highlight" style="color:var(--digital-color)">0000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Konsep Byte & Karakter -->
+                <div class="lab-grid" style="margin-top:20px;">
+                    <div class="card" style="border-left-color: #8b5cf6;">
+                        <h3 style="color:#8b5cf6;">Visualisasi 1 Byte (Karakter)</h3>
+                        <p>Ketik <strong>satu huruf</strong> untuk melihat susunan 8 Bit (1 Byte) di memori.</p>
+                        <div class="byte-visual-container">
+                            <input type="text" id="byteCharInput" class="calc-input" style="width:60px; font-size:1.5rem;" maxlength="1" placeholder="A" oninput="showByteVisual()">
+                            <div class="byte-box-group" id="byteBoxContainer"></div>
+                            <div id="byteInfoText" style="color:#94a3b8; font-size:0.9rem; text-align:center;">Huruf 'A' = 01000001</div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-left-color: #f59e0b;">
+                        <h3 style="color:#f59e0b;">Media Penyimpanan Digital</h3>
+                        <div class="write-controls" style="margin-top:10px;">
+                            <input type="text" id="storageInput" class="calc-input" style="width:120px;" value="10110100" maxlength="8">
+                            <button class="btn-primary" style="margin-top:0; padding:10px;" onclick="writeToStorage()">Tulis Data</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Media Penyimpanan Visual -->
+                <div class="storage-grid" style="margin-top:15px;">
+                    <div class="storage-card">
+                        <span class="storage-icon">💿</span>
+                        <span class="storage-title">Optik (CD/DVD)</span>
+                        <div class="storage-desc"><strong>Terang</strong> = 1, <strong>Gelap (Pit)</strong> = 0.</div>
+                        <div class="storage-visual" id="vis-optical"></div>
+                    </div>
+                    <div class="storage-card">
+                        <span class="storage-icon">🧲</span>
+                        <span class="storage-title">Magnetik (HDD)</span>
+                        <div class="storage-desc"><strong>Utara (N)</strong> = 1, <strong>Selatan (S)</strong> = 0.</div>
+                        <div class="storage-visual" id="vis-magnetic"></div>
+                    </div>
+                    <div class="storage-card">
+                        <span class="storage-icon">💾</span>
+                        <span class="storage-title">Solid State (SSD)</span>
+                        <div class="storage-desc"><strong>Kosong</strong> = 1, <strong>Terisi Elektron</strong> = 0.</div>
+                        <div class="storage-visual" id="vis-ssd"></div>
                     </div>
                 </div>
             </div>
@@ -110,25 +162,20 @@
             <!-- TAB 3: Aritmatika Biner -->
             <div id="tab-aritmatika" class="tab-content">
                 <p class="screen-subtitle">Bagaimana komputer menghitung? Kalkulator Operasi Biner.</p>
-                
                 <div class="calc-grid">
                     <div class="calc-row">
                         <input type="text" id="binNum1" class="calc-input" placeholder="Biner 1 (cth: 1010)" oninput="this.value = this.value.replace(/[^01]/g, '')">
-                        
                         <select id="binOp" class="calc-select" onchange="calcBinary()">
                             <option value="+">+ (Tambah)</option>
                             <option value="-">- (Kurang)</option>
                             <option value="*">× (Kali)</option>
                             <option value="/">÷ (Bagi)</option>
                         </select>
-                        
                         <input type="text" id="binNum2" class="calc-input" placeholder="Biner 2 (cth: 11)" oninput="this.value = this.value.replace(/[^01]/g, '')">
                     </div>
-                    
                     <div style="text-align: center;">
                         <button class="btn-primary" style="margin-top:0;" onclick="calcBinary()">Hitung</button>
                     </div>
-
                     <div class="calc-result-box">
                         <div style="font-size:0.9rem; color:#94a3b8; margin-bottom:5px;">Hasil Biner:</div>
                         <div id="binResText">0</div>
@@ -137,22 +184,11 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="card" style="margin-top:20px;">
-                    <h3>Aturan Dasar Penjumlahan Biner:</h3>
-                    <ul style="color:#cbd5e1; column-count: 2;">
-                        <li>0 + 0 = <strong>0</strong></li>
-                        <li>0 + 1 = <strong>1</strong></li>
-                        <li>1 + 0 = <strong>1</strong></li>
-                        <li>1 + 1 = <strong>0</strong> (Simpan/Carry 1)</li>
-                    </ul>
-                </div>
             </div>
 
             <!-- TAB 4: Gerbang Logika -->
             <div id="tab-logika" class="tab-content">
                 <p class="screen-subtitle">Otak dari semua perangkat digital: Sirkuit Gerbang Logika.</p>
-
                 <div class="card" style="text-align:center;">
                     <label style="font-size:1.1rem; color:var(--accent); font-weight:bold;">Pilih Gerbang Logika: </label>
                     <select id="gateSelect" class="calc-select" style="margin-left:10px;" onchange="evalLogic()">
@@ -164,9 +200,7 @@
                         <option value="XOR">XOR (Eksklusif OR)</option>
                     </select>
                 </div>
-
                 <div class="logic-container">
-                    <!-- INPUTS -->
                     <div class="logic-inputs">
                         <div style="text-align:center;">
                             <div style="color:#94a3b8; margin-bottom:5px;">Input A</div>
@@ -177,23 +211,14 @@
                             <button id="btnLogicB" class="logic-btn" onclick="toggleLogic('B')">0</button>
                         </div>
                     </div>
-
-                    <!-- GATE -->
                     <div class="gate-box">
                         <h2 id="gateNameDisplay" style="margin:0; color:var(--text-main);">AND</h2>
                         <span style="font-size:0.8rem; color:#94a3b8;">GATE</span>
                     </div>
-
-                    <!-- OUTPUT -->
                     <div style="text-align:center;">
                         <div style="color:var(--digital-color); margin-bottom:5px; font-weight:bold;">Output Y</div>
                         <div id="outLogicY" class="gate-output">0</div>
                     </div>
-                </div>
-
-                <div class="card">
-                    <h3 style="text-align:center;" id="gateDescTitle">Karakteristik Gerbang AND</h3>
-                    <p id="gateDescText" style="text-align:center;">Output Y akan bernilai 1 <strong>HANYA JIKA</strong> semua input (A dan B) bernilai 1.</p>
                 </div>
             </div>
 
@@ -205,31 +230,24 @@
             <p class="screen-subtitle">Uji pengetahuanmu dari keempat materi lab maya.</p>
 
             <div id="quiz-area">
-                
-                <h3 class="quiz-category-title">A. Sinyal & Konversi Analog</h3>
-                <!-- Soal 1 -->
                 <div class="quiz-container" id="q1">
-                    <div class="quiz-question">1. Proses mengambil titik-titik sampel dari gelombang suara analog untuk diubah menjadi angka biner disebut...</div>
+                    <div class="quiz-question">1. Media penyimpanan Solid State (SSD/Flashdisk) menyimpan angka 0 dan 1 dengan cara...</div>
                     <div class="quiz-options">
-                        <button class="quiz-option" onclick="selectAnswer('q1', this, false)">Digital-to-Analog Converter (DAC)</button>
-                        <button class="quiz-option" onclick="selectAnswer('q1', this, true)">Analog-to-Digital Converter (ADC)</button>
-                        <button class="quiz-option" onclick="selectAnswer('q1', this, false)">Logic Gate Operation</button>
+                        <button class="quiz-option" onclick="selectAnswer('q1', this, false)">Membuat lekukan (pit) menggunakan laser</button>
+                        <button class="quiz-option" onclick="selectAnswer('q1', this, true)">Menjebak elektron di dalam komponen transistor</button>
+                        <button class="quiz-option" onclick="selectAnswer('q1', this, false)">Mengubah arah kutub magnet utara dan selatan</button>
                     </div>
                 </div>
 
-                <h3 class="quiz-category-title">B. Eksplorasi Biner (Byte)</h3>
-                <!-- Soal 2 -->
                 <div class="quiz-container" id="q2">
-                    <div class="quiz-question">2. Berapakah nilai Desimal dari bilangan Biner <strong>0000 1010</strong> ?</div>
+                    <div class="quiz-question">2. Berapakah nilai Desimal dari bilangan Biner <strong>1011</strong> ?</div>
                     <div class="quiz-options">
-                        <button class="quiz-option" onclick="selectAnswer('q2', this, true)">10</button>
-                        <button class="quiz-option" onclick="selectAnswer('q2', this, false)">12</button>
-                        <button class="quiz-option" onclick="selectAnswer('q2', this, false)">8</button>
+                        <button class="quiz-option" onclick="selectAnswer('q2', this, true)">11</button>
+                        <button class="quiz-option" onclick="selectAnswer('q2', this, false)">10</button>
+                        <button class="quiz-option" onclick="selectAnswer('q2', this, false)">13</button>
                     </div>
                 </div>
 
-                <h3 class="quiz-category-title">C. Aritmatika Biner</h3>
-                <!-- Soal 3 -->
                 <div class="quiz-container" id="q3">
                     <div class="quiz-question">3. Jika dilakukan operasi penjumlahan biner: <strong>101 + 011</strong>, berapakah hasilnya?</div>
                     <div class="quiz-options">
@@ -239,34 +257,12 @@
                     </div>
                 </div>
                 
-                <!-- Soal 4 -->
                 <div class="quiz-container" id="q4">
-                    <div class="quiz-question">4. Pada perkalian biner, berapakah hasil dari <strong>11 × 10</strong> ? (Tip: 11 biner = 3 desimal, 10 biner = 2 desimal)</div>
+                    <div class="quiz-question">4. Gerbang logika manakah yang akan menghasilkan output 1 <strong>hanya jika SALAH SATU</strong> inputnya 1 (tetapi tidak keduanya)?</div>
                     <div class="quiz-options">
-                        <button class="quiz-option" onclick="selectAnswer('q4', this, true)">110</button>
-                        <button class="quiz-option" onclick="selectAnswer('q4', this, false)">101</button>
-                        <button class="quiz-option" onclick="selectAnswer('q4', this, false)">111</button>
-                    </div>
-                </div>
-
-                <h3 class="quiz-category-title">D. Gerbang Logika</h3>
-                <!-- Soal 5 -->
-                <div class="quiz-container" id="q5">
-                    <div class="quiz-question">5. Gerbang logika manakah yang akan menghasilkan output 1 <strong>hanya jika SALAH SATU</strong> inputnya 1 (tetapi tidak keduanya)?</div>
-                    <div class="quiz-options">
-                        <button class="quiz-option" onclick="selectAnswer('q5', this, false)">AND</button>
-                        <button class="quiz-option" onclick="selectAnswer('q5', this, false)">OR</button>
-                        <button class="quiz-option" onclick="selectAnswer('q5', this, true)">XOR</button>
-                    </div>
-                </div>
-                
-                <!-- Soal 6 -->
-                <div class="quiz-container" id="q6">
-                    <div class="quiz-question">6. Jika Input A = 0 dan dilewatkan pada gerbang <strong>NOT</strong>, maka Outputnya adalah...</div>
-                    <div class="quiz-options">
-                        <button class="quiz-option" onclick="selectAnswer('q6', this, true)">1</button>
-                        <button class="quiz-option" onclick="selectAnswer('q6', this, false)">0</button>
-                        <button class="quiz-option" onclick="selectAnswer('q6', this, false)">Error</button>
+                        <button class="quiz-option" onclick="selectAnswer('q4', this, false)">AND</button>
+                        <button class="quiz-option" onclick="selectAnswer('q4', this, false)">OR</button>
+                        <button class="quiz-option" onclick="selectAnswer('q4', this, true)">XOR</button>
                     </div>
                 </div>
 
