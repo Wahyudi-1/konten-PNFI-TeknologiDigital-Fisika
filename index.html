@@ -3,285 +3,362 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio Konversi Digital: Biner, Logika & Aritmatika</title>
-    <!-- Menghubungkan file CSS -->
+    <title>Laboratorium Gerbang Logika & Studi Kasus</title>
+    
+    <!-- Hubungkan ke berkas CSS lokal -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ASET AUDIO (Hidden) -->
-    <audio id="sfx-click" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
-    <audio id="sfx-success" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" preload="auto"></audio>
-    <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3" preload="auto"></audio>
+    <header>
+        <h1>Laboratorium Digital Gerbang Logika</h1>
+        <p class="subtitle">Eksplorasi interaktif simbol, tabel kebenaran, dan simulasi rangkaian elektronika digital.</p>
+    </header>
 
-    <div id="app-container">
-        <!-- NAVIGATION BAR -->
-        <nav class="top-nav">
-            <h2 class="nav-title">Studio Digital</h2>
-            <div class="nav-buttons">
-                <button class="nav-btn active" onclick="switchScreen('screen-home')" id="btn-nav-home">Beranda</button>
-                <button class="nav-btn" onclick="switchScreen('screen-lab')" id="btn-nav-lab">Lab Maya</button>
-                <button class="nav-btn" onclick="switchScreen('screen-eval')" id="btn-nav-eval">Evaluasi</button>
+    <div class="grid-container">
+
+        <!-- 1. AND GATE -->
+        <div class="gate-card">
+            <div class="gate-header">
+                <div class="gate-title">AND (Dan)</div>
+                <div class="gate-symbol-small">Y = A . B</div>
             </div>
-        </nav>
-
-        <!-- 1. SCREEN: BERANDA -->
-        <div id="screen-home" class="screen active">
-            <h1 class="screen-title">Sistem Digital & Biner</h1>
-            <p class="screen-subtitle">Eksplorasi cara komputer berpikir, menghitung, dan menyimpan data.</p>
             
-            <div class="card" style="border-left-color: var(--accent);">
-                <h3>Selamat Datang di Laboratorium Digital!</h3>
-                <p>Dalam modul ini, kamu akan belajar "Bahasa Mesin" sesungguhnya:</p>
-                <ul style="color: #cbd5e1; line-height: 1.6;">
-                    <li><strong>Konversi Sinyal:</strong> Proses mengubah suara menjadi data digital.</li>
-                    <li><strong>Eksplorasi Biner & Media Penyimpanan:</strong> Bagaimana angka biner disimpan ke dalam CD, Harddisk, dan SSD.</li>
-                    <li><strong>Aritmatika Biner:</strong> Operasi matematika menggunakan angka 0 dan 1.</li>
-                    <li><strong>Gerbang Logika:</strong> Dasar sirkuit otak komputer.</li>
-                </ul>
+            <div class="sim-area">
+                <div class="switch-group">
+                    <div>
+                        <div class="switch-label">Input A</div>
+                        <div class="toggle-btn" id="sw-and-a" onclick="toggle('and', 'a')"></div>
+                    </div>
+                    <div>
+                        <div class="switch-label">Input B</div>
+                        <div class="toggle-btn" id="sw-and-b" onclick="toggle('and', 'b')"></div>
+                    </div>
+                </div>
+
+                <svg viewBox="0 0 200 100">
+                    <path id="w-and-a" class="wire" d="M 10 30 L 70 30" />
+                    <path id="w-and-b" class="wire" d="M 10 70 L 70 70" />
+                    <path class="gate-body" d="M 70 15 L 100 15 A 35 35 0 0 1 100 85 L 70 85 Z" />
+                    <path id="w-and-out" class="wire" d="M 135 50 L 190 50" />
+                </svg>
+
+                <div class="bulb-group">
+                    <div class="bulb" id="bulb-and">0</div>
+                    <div class="switch-label" style="margin-top:5px">Output</div>
+                </div>
             </div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="btn-primary" onclick="switchScreen('screen-lab')">Masuk ke Ruang Lab ➔</button>
+
+            <div class="info-area">
+                <div class="desc">
+                    Gerbang "Tegas". Output hanya akan menyala (1) jika <strong>SEMUA</strong> input menyala (1). Jika ada satu saja yang mati, output mati.
+                    <br><br><em>Contoh: Brankas hanya terbuka jika Kunci A <strong>DAN</strong> Kunci B diputar.</em>
+                </div>
+                <table class="truth-table">
+                    <tr><th>A</th><th>B</th><th>Y</th></tr>
+                    <tr><td>0</td><td>0</td><td class="low">0</td></tr>
+                    <tr><td>0</td><td>1</td><td class="low">0</td></tr>
+                    <tr><td>1</td><td>0</td><td class="low">0</td></tr>
+                    <tr><td>1</td><td>1</td><td class="high">1</td></tr>
+                </table>
             </div>
         </div>
 
-        <!-- 2. SCREEN: LAB MAYA (With Tabs) -->
-        <div id="screen-lab" class="screen">
-            <h1 class="screen-title">Ruang Praktik Digital</h1>
+        <!-- 2. OR GATE -->
+        <div class="gate-card">
+            <div class="gate-header">
+                <div class="gate-title">OR (Atau)</div>
+                <div class="gate-symbol-small">Y = A + B</div>
+            </div>
             
-            <!-- LAB TABS -->
-            <div class="sub-nav">
-                <button class="sub-nav-btn active" onclick="switchLabTab('tab-sinyal', this)">1. Sinyal (ADC/DAC)</button>
-                <button class="sub-nav-btn" onclick="switchLabTab('tab-biner', this)">2. Eksplorasi Biner</button>
-                <button class="sub-nav-btn" onclick="switchLabTab('tab-aritmatika', this)">3. Aritmatika Biner</button>
-                <button class="sub-nav-btn" onclick="switchLabTab('tab-logika', this)">4. Gerbang Logika</button>
+            <div class="sim-area">
+                <div class="switch-group">
+                    <div><div class="switch-label">Input A</div><div class="toggle-btn" id="sw-or-a" onclick="toggle('or', 'a')"></div></div>
+                    <div><div class="switch-label">Input B</div><div class="toggle-btn" id="sw-or-b" onclick="toggle('or', 'b')"></div></div>
+                </div>
+
+                <svg viewBox="0 0 200 100">
+                    <path id="w-or-a" class="wire" d="M 10 30 L 70 30" />
+                    <path id="w-or-b" class="wire" d="M 10 70 L 70 70" />
+                    <path class="gate-body" d="M 65 15 Q 120 50 65 85 Q 85 50 65 15 Z" transform="translate(10,0) scale(0.9)" />
+                    <path class="gate-body" d="M 70 15 Q 130 50 70 85 L 70 85 Q 90 50 70 15 Z" />
+                    <path id="w-or-out" class="wire" d="M 130 50 L 190 50" />
+                </svg>
+
+                <div class="bulb-group"><div class="bulb" id="bulb-or">0</div></div>
             </div>
 
-            <!-- TAB 1: Sinyal ADC/DAC -->
-            <div id="tab-sinyal" class="tab-content active">
-                <p class="screen-subtitle">Mengubah gelombang suara analog menjadi sinyal digital diskrit.</p>
-                <div class="canvas-wrapper">
-                    <canvas id="oscillatorCanvas" height="200"></canvas>
+            <div class="info-area">
+                <div class="desc">
+                    Gerbang "Fleksibel". Output menyala jika <strong>SALAH SATU</strong> atau kedua input menyala. Hanya mati jika keduanya mati.
+                    <br><br><em>Contoh: Bel rumah bunyi jika Tombol Depan <strong>ATAU</strong> Tombol Belakang ditekan.</em>
                 </div>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; background:rgba(0,0,0,0.2); padding:15px; border-radius:10px; margin-bottom:20px;">
-                    <div>
-                        <label style="color:var(--accent);">Frekuensi Suara: </label>
-                        <input type="range" id="freqSlider" min="1" max="10" value="2">
-                    </div>
-                    <div>
-                        <label style="color:var(--accent);">Sampling Rate: </label>
-                        <input type="range" id="rateSlider" min="5" max="50" value="15">
-                    </div>
-                    <button style="background:var(--analog-color); border:none; padding:5px 15px; border-radius:4px; font-weight:bold; cursor:pointer;" onclick="performADC()">Sampling (ADC)</button>
-                    <button style="background:var(--digital-color); border:none; padding:5px 15px; border-radius:4px; font-weight:bold; cursor:pointer;" onclick="performDAC()">Playback (DAC)</button>
-                </div>
-                
-                <div style="margin-bottom: 5px; font-size: 0.9rem; color: #94a3b8;">Data Biner Tersimpan (Hasil Sampling):</div>
-                <div class="data-stream" id="binaryStream">
-                    <span style="opacity:0.5;">Belum ada data... Klik 'Sampling'</span>
-                </div>
+                <table class="truth-table">
+                    <tr><th>A</th><th>B</th><th>Y</th></tr>
+                    <tr><td>0</td><td>0</td><td class="low">0</td></tr>
+                    <tr><td>0</td><td>1</td><td class="high">1</td></tr>
+                    <tr><td>1</td><td>0</td><td class="high">1</td></tr>
+                    <tr><td>1</td><td>1</td><td class="high">1</td></tr>
+                </table>
             </div>
-
-            <!-- TAB 2: Eksplorasi Biner & Storage (DARI KODE ANDA) -->
-            <div id="tab-biner" class="tab-content">
-                <p class="screen-subtitle">Bagaimana komputer memahami dan menyimpan data fisik.</p>
-                
-                <div class="lab-grid">
-                    <!-- Biner ke Desimal -->
-                    <div class="card">
-                        <h3>Biner ke Desimal (4-Bit)</h3>
-                        <div class="bit-interactive">
-                            <div class="bit-toggle" onclick="toggleBit(3)"><div class="bit-val-label">8</div><div class="bit-box" id="bit3">0</div></div>
-                            <div class="bit-toggle" onclick="toggleBit(2)"><div class="bit-val-label">4</div><div class="bit-box" id="bit2">0</div></div>
-                            <div class="bit-toggle" onclick="toggleBit(1)"><div class="bit-val-label">2</div><div class="bit-box" id="bit1">0</div></div>
-                            <div class="bit-toggle" onclick="toggleBit(0)"><div class="bit-val-label">1</div><div class="bit-box" id="bit0">0</div></div>
-                        </div>
-                        <div class="calc-result">
-                            <span id="calcEquation" style="color:#94a3b8; font-size:0.9rem;">0 = </span>
-                            <span id="decResult" class="highlight">0</span>
-                        </div>
-                    </div>
-
-                    <!-- Desimal ke Biner -->
-                    <div class="card">
-                        <h3>Desimal ke Biner</h3>
-                        <p>Masukkan angka desimal (0-15) untuk melihat binernya.</p>
-                        <div style="text-align:center; margin: 20px 0;">
-                            <input type="number" id="decInput" class="calc-input" placeholder="0-15" min="0" max="15" oninput="convertDecToBin()">
-                        </div>
-                        <div class="calc-result">
-                            Kode Biner: <span id="binResult" class="highlight" style="color:var(--digital-color)">0000</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Konsep Byte & Karakter -->
-                <div class="lab-grid" style="margin-top:20px;">
-                    <div class="card" style="border-left-color: #8b5cf6;">
-                        <h3 style="color:#8b5cf6;">Visualisasi 1 Byte (Karakter)</h3>
-                        <p>Ketik <strong>satu huruf</strong> untuk melihat susunan 8 Bit (1 Byte) di memori.</p>
-                        <div class="byte-visual-container">
-                            <input type="text" id="byteCharInput" class="calc-input" style="width:60px; font-size:1.5rem;" maxlength="1" placeholder="A" oninput="showByteVisual()">
-                            <div class="byte-box-group" id="byteBoxContainer"></div>
-                            <div id="byteInfoText" style="color:#94a3b8; font-size:0.9rem; text-align:center;">Huruf 'A' = 01000001</div>
-                        </div>
-                    </div>
-
-                    <div class="card" style="border-left-color: #f59e0b;">
-                        <h3 style="color:#f59e0b;">Media Penyimpanan Digital</h3>
-                        <div class="write-controls" style="margin-top:10px;">
-                            <input type="text" id="storageInput" class="calc-input" style="width:120px;" value="10110100" maxlength="8">
-                            <button class="btn-primary" style="margin-top:0; padding:10px;" onclick="writeToStorage()">Tulis Data</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Media Penyimpanan Visual -->
-                <div class="storage-grid" style="margin-top:15px;">
-                    <div class="storage-card">
-                        <span class="storage-icon">💿</span>
-                        <span class="storage-title">Optik (CD/DVD)</span>
-                        <div class="storage-desc"><strong>Terang</strong> = 1, <strong>Gelap (Pit)</strong> = 0.</div>
-                        <div class="storage-visual" id="vis-optical"></div>
-                    </div>
-                    <div class="storage-card">
-                        <span class="storage-icon">🧲</span>
-                        <span class="storage-title">Magnetik (HDD)</span>
-                        <div class="storage-desc"><strong>Utara (N)</strong> = 1, <strong>Selatan (S)</strong> = 0.</div>
-                        <div class="storage-visual" id="vis-magnetic"></div>
-                    </div>
-                    <div class="storage-card">
-                        <span class="storage-icon">💾</span>
-                        <span class="storage-title">Solid State (SSD)</span>
-                        <div class="storage-desc"><strong>Kosong</strong> = 1, <strong>Terisi Elektron</strong> = 0.</div>
-                        <div class="storage-visual" id="vis-ssd"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 3: Aritmatika Biner -->
-            <div id="tab-aritmatika" class="tab-content">
-                <p class="screen-subtitle">Bagaimana komputer menghitung? Kalkulator Operasi Biner.</p>
-                <div class="calc-grid">
-                    <div class="calc-row">
-                        <input type="text" id="binNum1" class="calc-input" placeholder="Biner 1 (cth: 1010)" oninput="this.value = this.value.replace(/[^01]/g, '')">
-                        <select id="binOp" class="calc-select" onchange="calcBinary()">
-                            <option value="+">+ (Tambah)</option>
-                            <option value="-">- (Kurang)</option>
-                            <option value="*">× (Kali)</option>
-                            <option value="/">÷ (Bagi)</option>
-                        </select>
-                        <input type="text" id="binNum2" class="calc-input" placeholder="Biner 2 (cth: 11)" oninput="this.value = this.value.replace(/[^01]/g, '')">
-                    </div>
-                    <div style="text-align: center;">
-                        <button class="btn-primary" style="margin-top:0;" onclick="calcBinary()">Hitung</button>
-                    </div>
-                    <div class="calc-result-box">
-                        <div style="font-size:0.9rem; color:#94a3b8; margin-bottom:5px;">Hasil Biner:</div>
-                        <div id="binResText">0</div>
-                        <div style="font-size:1rem; color:#cbd5e1; margin-top:10px; border-top:1px dashed #475569; padding-top:10px;" id="binResDec">
-                            (Desimal: 0)
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 4: Gerbang Logika -->
-            <div id="tab-logika" class="tab-content">
-                <p class="screen-subtitle">Otak dari semua perangkat digital: Sirkuit Gerbang Logika.</p>
-                <div class="card" style="text-align:center;">
-                    <label style="font-size:1.1rem; color:var(--accent); font-weight:bold;">Pilih Gerbang Logika: </label>
-                    <select id="gateSelect" class="calc-select" style="margin-left:10px;" onchange="evalLogic()">
-                        <option value="AND">AND (Dan)</option>
-                        <option value="OR">OR (Atau)</option>
-                        <option value="NOT">NOT (Pembalikan)</option>
-                        <option value="NAND">NAND (Not AND)</option>
-                        <option value="NOR">NOR (Not OR)</option>
-                        <option value="XOR">XOR (Eksklusif OR)</option>
-                    </select>
-                </div>
-                <div class="logic-container">
-                    <div class="logic-inputs">
-                        <div style="text-align:center;">
-                            <div style="color:#94a3b8; margin-bottom:5px;">Input A</div>
-                            <button id="btnLogicA" class="logic-btn" onclick="toggleLogic('A')">0</button>
-                        </div>
-                        <div style="text-align:center;" id="boxLogicB">
-                            <div style="color:#94a3b8; margin-bottom:5px;">Input B</div>
-                            <button id="btnLogicB" class="logic-btn" onclick="toggleLogic('B')">0</button>
-                        </div>
-                    </div>
-                    <div class="gate-box">
-                        <h2 id="gateNameDisplay" style="margin:0; color:var(--text-main);">AND</h2>
-                        <span style="font-size:0.8rem; color:#94a3b8;">GATE</span>
-                    </div>
-                    <div style="text-align:center;">
-                        <div style="color:var(--digital-color); margin-bottom:5px; font-weight:bold;">Output Y</div>
-                        <div id="outLogicY" class="gate-output">0</div>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <!-- 3. SCREEN: EVALUASI -->
-        <div id="screen-eval" class="screen">
-            <h1 class="screen-title">Evaluasi Pemahaman</h1>
-            <p class="screen-subtitle">Uji pengetahuanmu dari keempat materi lab maya.</p>
-
-            <div id="quiz-area">
-                <div class="quiz-container" id="q1">
-                    <div class="quiz-question">1. Media penyimpanan Solid State (SSD/Flashdisk) menyimpan angka 0 dan 1 dengan cara...</div>
-                    <div class="quiz-options">
-                        <button class="quiz-option" onclick="selectAnswer('q1', this, false)">Membuat lekukan (pit) menggunakan laser</button>
-                        <button class="quiz-option" onclick="selectAnswer('q1', this, true)">Menjebak elektron di dalam komponen transistor</button>
-                        <button class="quiz-option" onclick="selectAnswer('q1', this, false)">Mengubah arah kutub magnet utara dan selatan</button>
-                    </div>
+        <!-- 3. NOT GATE -->
+        <div class="gate-card">
+            <div class="gate-header">
+                <div class="gate-title">NOT (Inverter)</div>
+                <div class="gate-symbol-small">Y = A'</div>
+            </div>
+            
+            <div class="sim-area">
+                <div class="switch-group" style="justify-content: center;">
+                    <div><div class="switch-label">Input A</div><div class="toggle-btn" id="sw-not-a" onclick="toggle('not', 'a')"></div></div>
                 </div>
 
-                <div class="quiz-container" id="q2">
-                    <div class="quiz-question">2. Berapakah nilai Desimal dari bilangan Biner <strong>1011</strong> ?</div>
-                    <div class="quiz-options">
-                        <button class="quiz-option" onclick="selectAnswer('q2', this, true)">11</button>
-                        <button class="quiz-option" onclick="selectAnswer('q2', this, false)">10</button>
-                        <button class="quiz-option" onclick="selectAnswer('q2', this, false)">13</button>
-                    </div>
-                </div>
+                <svg viewBox="0 0 200 100">
+                    <path id="w-not-a" class="wire" d="M 20 50 L 80 50" />
+                    <path class="gate-body" d="M 80 20 L 80 80 L 130 50 Z" />
+                    <circle cx="135" cy="50" r="5" fill="#334155" stroke="#cbd5e1" stroke-width="2"/>
+                    <path id="w-not-out" class="wire" d="M 140 50 L 190 50" />
+                </svg>
 
-                <div class="quiz-container" id="q3">
-                    <div class="quiz-question">3. Jika dilakukan operasi penjumlahan biner: <strong>101 + 011</strong>, berapakah hasilnya?</div>
-                    <div class="quiz-options">
-                        <button class="quiz-option" onclick="selectAnswer('q3', this, false)">112</button>
-                        <button class="quiz-option" onclick="selectAnswer('q3', this, false)">110</button>
-                        <button class="quiz-option" onclick="selectAnswer('q3', this, true)">1000</button>
-                    </div>
-                </div>
-                
-                <div class="quiz-container" id="q4">
-                    <div class="quiz-question">4. Gerbang logika manakah yang akan menghasilkan output 1 <strong>hanya jika SALAH SATU</strong> inputnya 1 (tetapi tidak keduanya)?</div>
-                    <div class="quiz-options">
-                        <button class="quiz-option" onclick="selectAnswer('q4', this, false)">AND</button>
-                        <button class="quiz-option" onclick="selectAnswer('q4', this, false)">OR</button>
-                        <button class="quiz-option" onclick="selectAnswer('q4', this, true)">XOR</button>
-                    </div>
-                </div>
-
-                <div style="text-align: center; margin-top: 30px;">
-                    <button class="btn-primary" onclick="submitQuiz()">Cek Semua Jawaban</button>
-                </div>
+                <div class="bulb-group"><div class="bulb" id="bulb-not">1</div></div>
             </div>
 
-            <!-- Hasil Kuis -->
-            <div id="quiz-result">
-                <h2 id="result-title">Hasil Kuis</h2>
-                <p id="result-text" style="font-size: 1.1rem;"></p>
-                <button class="btn-primary" style="margin-top: 10px; background: #64748b;" onclick="resetQuiz()">Ulangi Kuis</button>
+            <div class="info-area">
+                <div class="desc">
+                    Gerbang "Pembalik". Output selalu berlawanan dengan input. Jika input 1, output 0. Jika input 0, output 1.
+                    <br><br><em>Contoh: Lampu kulkas mati (0) saat pintu ditutup (1).</em>
+                </div>
+                <table class="truth-table">
+                    <tr><th>A</th><th>Y</th></tr>
+                    <tr><td>0</td><td class="high">1</td></tr>
+                    <tr><td>1</td><td class="low">0</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 4. NAND GATE -->
+        <div class="gate-card">
+            <div class="gate-header">
+                <div class="gate-title">NAND (Not AND)</div>
+                <div class="gate-symbol-small">Y = (A.B)'</div>
+            </div>
+            
+            <div class="sim-area">
+                <div class="switch-group">
+                    <div><div class="switch-label">Input A</div><div class="toggle-btn" id="sw-nand-a" onclick="toggle('nand', 'a')"></div></div>
+                    <div><div class="switch-label">Input B</div><div class="toggle-btn" id="sw-nand-b" onclick="toggle('nand', 'b')"></div></div>
+                </div>
+
+                <svg viewBox="0 0 200 100">
+                    <path id="w-nand-a" class="wire" d="M 10 30 L 70 30" />
+                    <path id="w-nand-b" class="wire" d="M 10 70 L 70 70" />
+                    <path class="gate-body" d="M 70 15 L 100 15 A 35 35 0 0 1 100 85 L 70 85 Z" />
+                    <circle cx="140" cy="50" r="5" fill="#334155" stroke="#cbd5e1" stroke-width="2"/>
+                    <path id="w-nand-out" class="wire" d="M 145 50 L 190 50" />
+                </svg>
+
+                <div class="bulb-group"><div class="bulb" id="bulb-nand">1</div></div>
+            </div>
+
+            <div class="info-area">
+                <div class="desc">
+                    Kebalikan dari AND. Output akan <strong>MATI</strong> hanya jika semua input menyala. Sisanya selalu hidup. Ini adalah gerbang universal.
+                </div>
+                <table class="truth-table">
+                    <tr><th>A</th><th>B</th><th>Y</th></tr>
+                    <tr><td>0</td><td>0</td><td class="high">1</td></tr>
+                    <tr><td>0</td><td>1</td><td class="high">1</td></tr>
+                    <tr><td>1</td><td>0</td><td class="high">1</td></tr>
+                    <tr><td>1</td><td>1</td><td class="low">0</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 5. NOR GATE -->
+        <div class="gate-card">
+            <div class="gate-header">
+                <div class="gate-title">NOR (Not OR)</div>
+                <div class="gate-symbol-small">Y = (A+B)'</div>
+            </div>
+            
+            <div class="sim-area">
+                <div class="switch-group">
+                    <div><div class="switch-label">Input A</div><div class="toggle-btn" id="sw-nor-a" onclick="toggle('nor', 'a')"></div></div>
+                    <div><div class="switch-label">Input B</div><div class="toggle-btn" id="sw-nor-b" onclick="toggle('nor', 'b')"></div></div>
+                </div>
+
+                <svg viewBox="0 0 200 100">
+                    <path id="w-nor-a" class="wire" d="M 10 30 L 70 30" />
+                    <path id="w-nor-b" class="wire" d="M 10 70 L 70 70" />
+                    <path class="gate-body" d="M 70 15 Q 130 50 70 85 L 70 85 Q 90 50 70 15 Z" />
+                    <circle cx="135" cy="50" r="5" fill="#334155" stroke="#cbd5e1" stroke-width="2"/>
+                    <path id="w-nor-out" class="wire" d="M 140 50 L 190 50" />
+                </svg>
+
+                <div class="bulb-group"><div class="bulb" id="bulb-nor">1</div></div>
+            </div>
+
+            <div class="info-area">
+                <div class="desc">
+                    Kebalikan dari OR. Output hanya menyala (1) jika <strong>SEMUA</strong> input MATI (0). Jika salah satu menyala, output mati.
+                </div>
+                <table class="truth-table">
+                    <tr><th>A</th><th>B</th><th>Y</th></tr>
+                    <tr><td>0</td><td>0</td><td class="high">1</td></tr>
+                    <tr><td>0</td><td>1</td><td class="low">0</td></tr>
+                    <tr><td>1</td><td>0</td><td class="low">0</td></tr>
+                    <tr><td>1</td><td>1</td><td class="low">0</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 6. XOR GATE -->
+        <div class="gate-card">
+            <div class="gate-header">
+                <div class="gate-title">XOR (Exclusive OR)</div>
+                <div class="gate-symbol-small">Y = A ⊕ B</div>
+            </div>
+            
+            <div class="sim-area">
+                <div class="switch-group">
+                    <div><div class="switch-label">Input A</div><div class="toggle-btn" id="sw-xor-a" onclick="toggle('xor', 'a')"></div></div>
+                    <div><div class="switch-label">Input B</div><div class="toggle-btn" id="sw-xor-b" onclick="toggle('xor', 'b')"></div></div>
+                </div>
+
+                <svg viewBox="0 0 200 100">
+                    <path id="w-xor-a" class="wire" d="M 10 30 L 65 30" />
+                    <path id="w-xor-b" class="wire" d="M 10 70 L 65 70" />
+                    <path class="gate-body" style="fill:none; stroke-width:3" d="M 60 15 Q 80 50 60 85" />
+                    <path class="gate-body" d="M 70 15 Q 130 50 70 85 L 70 85 Q 90 50 70 15 Z" />
+                    <path id="w-xor-out" class="wire" d="M 130 50 L 190 50" />
+                </svg>
+
+                <div class="bulb-group"><div class="bulb" id="bulb-xor">0</div></div>
+            </div>
+
+            <div class="info-area">
+                <div class="desc">
+                    Gerbang "Beda". Output hanya menyala jika inputnya <strong>BERBEDA</strong> (Satu 1, Satu 0). Jika input sama (00 atau 11), output mati.
+                </div>
+                <table class="truth-table">
+                    <tr><th>A</th><th>B</th><th>Y</th></tr>
+                    <tr><td>0</td><td>0</td><td class="low">0</td></tr>
+                    <tr><td>0</td><td>1</td><td class="high">1</td></tr>
+                    <tr><td>1</td><td>0</td><td class="high">1</td></tr>
+                    <tr><td>1</td><td>1</td><td class="low">0</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 7. XNOR GATE -->
+        <div class="gate-card">
+            <div class="gate-header">
+                <div class="gate-title">XNOR (XAND)</div>
+                <div class="gate-symbol-small">Y = (A ⊕ B)'</div>
+            </div>
+            
+            <div class="sim-area">
+                <div class="switch-group">
+                    <div><div class="switch-label">Input A</div><div class="toggle-btn" id="sw-xnor-a" onclick="toggle('xnor', 'a')"></div></div>
+                    <div><div class="switch-label">Input B</div><div class="toggle-btn" id="sw-xnor-b" onclick="toggle('xnor', 'b')"></div></div>
+                </div>
+
+                <svg viewBox="0 0 200 100">
+                    <path id="w-xnor-a" class="wire" d="M 10 30 L 65 30" />
+                    <path id="w-xnor-b" class="wire" d="M 10 70 L 65 70" />
+                    <path class="gate-body" style="fill:none; stroke-width:3" d="M 60 15 Q 80 50 60 85" />
+                    <path class="gate-body" d="M 70 15 Q 130 50 70 85 L 70 85 Q 90 50 70 15 Z" />
+                    <circle cx="135" cy="50" r="5" fill="#334155" stroke="#cbd5e1" stroke-width="2"/>
+                    <path id="w-xnor-out" class="wire" d="M 140 50 L 190 50" />
+                </svg>
+
+                <div class="bulb-group"><div class="bulb" id="bulb-xnor">1</div></div>
+            </div>
+
+            <div class="info-area">
+                <div class="desc">
+                    Kebalikan XOR (disebut juga Equivalence). Output menyala jika kedua input <strong>SAMA</strong> (00 atau 11).
+                </div>
+                <table class="truth-table">
+                    <tr><th>A</th><th>B</th><th>Y</th></tr>
+                    <tr><td>0</td><td>0</td><td class="high">1</td></tr>
+                    <tr><td>0</td><td>1</td><td class="low">0</td></tr>
+                    <tr><td>1</td><td>0</td><td class="low">0</td></tr>
+                    <tr><td>1</td><td>1</td><td class="high">1</td></tr>
+                </table>
             </div>
         </div>
 
     </div>
 
-    <!-- Menghubungkan file JavaScript -->
+    <!-- STUDI KASUS -->
+    <div class="case-study">
+        <div class="case-header">
+            <h2>Studi Kasus: Sistem Penyiram Otomatis</h2>
+            <p style="color:#cbd5e1">Rangkaian Kombinasi (AND & OR) - Kontrol Sensor & Manual</p>
+        </div>
+        
+        <p style="text-align:center; max-width:800px; margin:0 auto 30px auto; font-size:0.95rem; line-height:1.6;">
+            Penyiram menyala jika:
+            <strong>(Sensor Kering <span style="color:var(--wire-on)">DAN</span> Tangki Penuh)</strong>
+            <span style="color:var(--accent); font-weight:bold; margin:0 5px;">ATAU</span>
+            <strong>(Tombol Manual ON)</strong>
+        </p>
+
+        <div class="case-sim">
+            <!-- GROUP INPUT (KIRI) -->
+            <div class="sensor-group">
+                <div class="sensor-box" id="cs-sensor-a" onclick="toggleCase('a')">
+                    <span class="sensor-icon">🏜️</span>
+                    <span class="sensor-label">Sensor Kering</span>
+                </div>
+                <div class="sensor-box" id="cs-sensor-b" onclick="toggleCase('b')">
+                    <span class="sensor-icon">💧</span>
+                    <span class="sensor-label">Tangki Air</span>
+                </div>
+                <div class="sensor-box" id="cs-sensor-c" onclick="toggleCase('c')" style="border-color:#38bdf8;">
+                    <span class="sensor-icon">🚨</span>
+                    <span class="sensor-label">Manual (C)</span>
+                </div>
+            </div>
+
+            <!-- LOGIC DIAGRAM (TENGAH) -->
+            <svg width="340" height="220" viewBox="0 0 340 220" style="background: rgba(0,0,0,0.2); border-radius:10px;">
+                <!-- Inputs wires (A & B -> AND) -->
+                <path id="cs-w-a" class="wire" d="M 0 40 L 60 40" />
+                <path id="cs-w-b" class="wire" d="M 0 80 L 60 80" />
+                
+                <!-- AND GATE -->
+                <path class="gate-body" d="M 60 25 L 90 25 A 35 35 0 0 1 90 95 L 60 95 Z" />
+                
+                <!-- Output of AND -->
+                <path id="cs-w-and" class="wire" d="M 125 60 L 160 60 L 160 90 L 200 90" />
+                
+                <!-- Input C (Manual -> OR) -->
+                <path id="cs-w-c" class="wire" d="M 0 160 L 160 160 L 160 130 L 200 130" />
+
+                <!-- OR GATE -->
+                <path class="gate-body" d="M 200 75 Q 250 110 200 145 Q 220 110 200 75 Z" />
+                
+                <!-- Final Output -->
+                <path id="cs-w-final" class="wire" d="M 250 110 L 340 110" />
+
+                <!-- Labels inside diagram -->
+                <text x="70" y="65" fill="#64748b" font-size="10" font-family="monospace">AND</text>
+                <text x="210" y="115" fill="#64748b" font-size="10" font-family="monospace">OR</text>
+            </svg>
+
+            <!-- OUTPUT (KANAN) -->
+            <div style="display:flex; flex-direction:column; align-items:center; width:120px;">
+                <div class="sprinkler" id="cs-sprinkler">🚿</div>
+                <div style="margin-top:10px; font-weight:bold; color:var(--text-main)" id="cs-status">MATI</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hubungkan ke berkas JS lokal -->
     <script src="script.js"></script>
 </body>
 </html>
